@@ -12,7 +12,7 @@ INTENTS = discord.Intents.default()
 bot = commands.Bot(command_prefix=PREFIX, intents=INTENTS)
 clockedIn = []
 printClockedIn = []
-clockInChannel = 707774381652181092
+clockInChannel = 806001968682237972
 
 @bot.event
 async def on_ready():
