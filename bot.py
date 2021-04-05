@@ -11,7 +11,6 @@ PREFIX = '!'
 INTENTS = discord.Intents.default()
 bot = commands.Bot(command_prefix=PREFIX, intents=INTENTS)
 clockedIn = []
-printClockedIn = []
 clockInChannel = 806001968682237972
 
 @bot.event
@@ -21,15 +20,11 @@ async def on_ready():
     schedule.start()
     autosave.start()
     try:
-        with open("F:\downloads pt 2\discord\clockedIn.json", 'r') as listfile:
+        with open("clockedIn.json", 'r') as listfile:
             clockedIn = json.load(listfile)
     except Exception:
             clockedIn = []
     return clockedIn
-
-
-
-
 
 @bot.command()
 async def ping(ctx):
@@ -53,10 +48,10 @@ async def on_message(message):
 @bot.command(pass_context=True)
 @has_permissions(manage_roles=True)
 async def add(ctx, member: Member):
-    await ctx.send("hi")
     if member.id in clockedIn:
         await ctx.send("That user is already clocked in.")
     else:
+        await ctx.send("User added.")
         clockedIn.append(member.id)
 
 @bot.command(pass_context=True)
@@ -64,6 +59,7 @@ async def add(ctx, member: Member):
 async def remove(ctx, member: Member):
     if member.id in clockedIn:
         clockedIn.remove(member.id)
+        await ctx.send("User added.")
     else:
         await ctx.send("That user is not clocked in currently, sorry!")
     
@@ -77,10 +73,9 @@ async def schedule():
 @tasks.loop(seconds=30)
 async def autosave():
     try:
-        with open("F:\downloads pt 2\discord\clockedIn.json", 'w') as listfile:
+        with open("clockedIn.json", 'w') as listfile:
             json.dump(clockedIn, listfile)
     except Exception:
         print("Oh, no! List wasn't saved! It'll be empty tomorrow...")
-
 
 bot.run(TOKEN)
